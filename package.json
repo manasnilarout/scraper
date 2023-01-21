@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/manasnilarout/scraper/issues"
   },
-  "homepage": "https://github.com/manasnilarout/scraper#readme"
+  "homepage": "https://github.com/manasnilarout/scraper#readme",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "puppeteer": "^19.5.2"
+  }
 }
