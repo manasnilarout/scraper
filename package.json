@@ -1,0 +1,24 @@
+{
+  "name": "scraper",
+  "version": "1.0.0",
+  "description": "Project for scraping data",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manasnilarout/scraper.git"
+  },
+  "keywords": [
+    "Scraping",
+    "Web",
+    "data"
+  ],
+  "author": "Manas Ranjan Nilorout",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manasnilarout/scraper/issues"
+  },
+  "homepage": "https://github.com/manasnilarout/scraper#readme"
+}
