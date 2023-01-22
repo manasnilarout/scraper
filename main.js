@@ -23,7 +23,9 @@ const browserActions = new BrowserActions();
 
 const doSomething = async () => {
     logger.log('Starting scraping action');
-    await browserActions.openPage(scrapeConfig.baseUrl, scrapeConfig.homePageWaitForSelector);
+    await browserActions.openPage(
+        scrapeConfig.baseUrl, scrapeConfig.homePageWaitForSelector, scrapeConfig
+    );
 
     // Check if there is a action series to be performed
     if (scrapeConfig.actionSeries && scrapeConfig.actionSeries.length > 0) {

@@ -7,11 +7,14 @@ import { environmentConstants } from '../utils/env.utils/env.config.js';
 import { Logger } from '../utils/logger.js';
 import { BROWSER_VIEW_PORT_SIZE, ACTION_TYPES } from '../config/constants.js';
 import { delay } from '../utils/util.js';
+import { FileUtil } from '../utils/files.utill.js';
 
 export const BrowserActions = class {
     _browser;
     _page;
     logger;
+    fileUtil;
+    mainAction;
 
     setBrowser = (b) => {
         this._browser = b;
@@ -21,11 +24,18 @@ export const BrowserActions = class {
         this._page = p;
     };
 
-    constructor() {
-        this.logger = new Logger(BrowserActions.name);
+    setAction = (a) => {
+        this.mainAction = a;
     };
 
-    openPage = async (url, searchResultSelector) => {
+    constructor() {
+        this.logger = new Logger(BrowserActions.name);
+        this.fileUtil = new FileUtil('outputs');
+    };
+
+    openPage = async (url, searchResultSelector, scrapeConfig) => {
+        this.setAction(scrapeConfig);
+        this.fileUtil.setAction(scrapeConfig);
         const browser = await puppeteer.launch(Options.Defaults);
         const page = await browser.newPage();
         this.setBrowser(browser);
@@ -65,11 +75,11 @@ export const BrowserActions = class {
         try {
             if (selector) {
                 await this._page.waitForSelector(selector, {
-                    timeout: timeoutInSeconds * 1000 * 1000 || 10000
+                    timeout: timeoutInSeconds * 1000 || 10000
                 });
             } else if (xpath) {
                 await this._page.waitForSelector(xpath, {
-                    timeout: timeoutInSeconds * 1000
+                    timeout: timeoutInSeconds * 1000 || 10000
                 });
             }
         } catch (e) {
@@ -83,6 +93,8 @@ export const BrowserActions = class {
     performAction = async (action) => {
         this.logger.debugLog(`Starting action -> ${action.actionName}`);
 
+        const actionResult = {};
+
         switch (action.type) {
             case ACTION_TYPES.JS_SCRIPT: {
                 if (action.context === 'browser') {
@@ -91,7 +103,16 @@ export const BrowserActions = class {
                         null,
                         !!(action.JS)
                     );
-                    return await results;
+
+                    if (action.hasOutput) {
+                        Object.assign(actionResult, {
+                            [action.name]: {
+                                data: results,
+                                type: action.dataType
+                            }
+                        });
+                    }
+                    return results;
                 }
             }
 
@@ -112,6 +133,12 @@ export const BrowserActions = class {
             case ACTION_TYPES.DELAY: {
                 await delay(action.delayDurationInSeconds || 5);
                 break;
+            }
+
+            case ACTION_TYPES.WRITE_DATA: {
+                await this.fileUtil.checkAndCreateActionOutputFolder();
+                const str = actionResult.type === 'json' ? JSON.stringify(actionResult.data) : actionResult.data;
+                await this.fileUtil.writeDataToFile(str, action.fileName);
             }
 
             default: {

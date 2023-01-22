@@ -17,10 +17,10 @@ export const Logger = class {
     }
 
     log = (log) => {
-        console.log(`${this.fileName}|${new Date().toJSON()}|${log}`);
+        console.log(`${this.fileName}|${new Date().toJSON()}| ${log}`);
     }
 
     debugLog = (log) => {
-        console.log(`DEBUG|${this.fileName}|${new Date().toJSON()}|${log}`);
+        console.log(`DEBUG|${this.fileName}|${new Date().toJSON()}| ${log}`);
     }
 };
