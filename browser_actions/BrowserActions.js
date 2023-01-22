@@ -91,8 +91,7 @@ export const BrowserActions = class {
                         null,
                         !!(action.JS)
                     );
-                    console.log(await results);
-                    break;
+                    return await results;
                 }
             }
 

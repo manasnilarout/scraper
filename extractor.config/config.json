@@ -20,8 +20,14 @@
             "context": "browser",
             "actionName": "Pull Region URL's",
             "JS": "return Array.from(document.querySelectorAll('div.title ~ div > div a')).map(e => ({url: e.href}));",
-            "JSFileName": null,
-            "writeDataToFile": "regions.json"
+            "JSFileName": null
+        },
+        {
+            "type": "WriteDataToFile",
+            "actionName": "Write region URL's to a file",
+            "outputDir": "outputs",
+            "fileType": "json",
+            "fileName": "regions.json"
         }
     ]
 }

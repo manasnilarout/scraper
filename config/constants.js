@@ -10,4 +10,5 @@ export const ACTION_TYPES = {
     CLICK: 'Click',
     GOTO: 'GoTo',
     DELAY: 'Delay',
+    WRITE_DATA: 'WriteDataToFile',
 };
