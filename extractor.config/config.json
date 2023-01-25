@@ -1,0 +1,41 @@
+{
+    "title": "Zomato Data",
+    "code": "zomato_regions",
+    "baseUrl": "https://www.zomato.com/",
+    "homePageWaitForSelector": "div.title ~ div",
+    "actionSeries": [
+        {
+            "type": "FindAndClick",
+            "name": "clickOnLandingPage",
+            "actionName": "Find and click see all options in landing page",
+            "selector": "div.title ~ div > div > div > div > i",
+            "xpath": null,
+            "waitForSeconds": 5
+        },
+        {
+            "type": "Delay",
+            "name": "sleepForTwoSeconds",
+            "actionName": "Sleep for 2 seconds",
+            "delayDurationInSeconds": 2
+        },
+        {
+            "type": "JSScript",
+            "name": "pullRegions",
+            "context": "browser",
+            "actionName": "Pull Region URL's",
+            "JS": "return Array.from(document.querySelectorAll('div.title ~ div > div a')).map(e => ({url: e.href}));",
+            "JSFileName": null,
+            "hasOutput": true,
+            "dataType": "json"
+        },
+        {
+            "type": "WriteDataToFile",
+            "name": "writeRegions",
+            "actionName": "Write region URL's to a file",
+            "outputDir": "outputs",
+            "fileType": "json",
+            "fileName": "regions.json",
+            "dataFromFile": "pullRegions"
+        }
+    ]
+}
